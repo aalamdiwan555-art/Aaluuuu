@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Autoclicker"
+description = "A browser control center for managing automated click profiles, account access, admin approvals, and time-limited subscriptions. Users can sign up, wait for approval, and run the autoclicker only while their subscription is active."
+version = "1.0.0"
+id = "artifacts/autoclicker"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 22668
+
+[services.development]
+run = "pnpm --filter @workspace/autoclicker run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/autoclicker", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/autoclicker/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "22668"
+BASE_PATH = "/"
